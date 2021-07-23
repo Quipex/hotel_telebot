@@ -1,0 +1,5 @@
+/.env
+*.iml
+/.idea/
+/node_modules/
+/data/app.db.json
