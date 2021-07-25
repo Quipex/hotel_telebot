@@ -17,17 +17,17 @@ export function toUnixDate(date: Date): number {
 /**
  * @return unix date from given string
  */
-export function parseDate(dateText: string): number | undefined {
+export function parseDate(dateText: string): Date | undefined {
 	const dateTextLower = dateText.toLowerCase();
 	const now = new Date();
 	if (dateTextLower === 'today' || dateTextLower === 'сегодня') {
-		return toUnixDate(now);
+		return now;
 	}
 	if (dateTextLower === 'yesterday' || dateTextLower === 'вчера') {
-		return toUnixDate(moment(now).subtract(1, 'day').toDate());
+		return moment(now).subtract(1, 'day').toDate();
 	}
 	if (dateTextLower === 'tomorrow' || dateTextLower === 'завтра') {
-		return toUnixDate(moment(now).add(1, 'day').toDate());
+		return moment(now).add(1, 'day').toDate();
 	}
 	// 02.03 or 17/07 or 4.3 etc. <br />
 	// Simplified date format, where first number is date, second is month
@@ -36,7 +36,7 @@ export function parseDate(dateText: string): number | undefined {
 		now.setDate(+simplifiedDates[1]);
 		// month is zero-based
 		now.setMonth(+simplifiedDates[2] - 1);
-		return toUnixDate(now);
+		return now;
 	}
 	// 1.1.1990 or 01.02.2021 or 01.02.20 or 1.2.20 etc. <br />
 	// Full date format, where first number is date, second is month and third is year
@@ -52,7 +52,14 @@ export function parseDate(dateText: string): number | undefined {
 			yearToken = `${firstYearPart}${yearToken}`;
 		}
 		now.setFullYear(+yearToken);
-		return toUnixDate(now);
+		return now;
 	}
 	return undefined;
+}
+
+export function parseDateAsUnix(dateText: string): number | undefined {
+	const parsedDate = parseDate(dateText);
+	if (parsedDate) {
+		return toUnixDate(parsedDate);
+	}
 }

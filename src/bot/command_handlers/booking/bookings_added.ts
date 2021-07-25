@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Context } from 'telegraf';
 import BriefBooking from '../../message_components/booking/BriefBooking';
-import { parseDate } from '../../../utils/dates.helper';
+import { parseDateAsUnix } from '../../../utils/dates.helper';
 import briefBookingActions from '../../message_components/booking/BriefBookingActions';
 import fetchBookingsArriveAt from '../../../api/calls/fetchBookingsArriveAt';
 
 export async function parseDateAndReplyToInvalid(ctx: Context, text?: string): Promise<number | undefined> {
 	const messageText = text ?? ctx.message!.text;
 	const commandTokens = messageText.split(' ');
-	let date;
+	let date: number | undefined;
 	if (commandTokens.length < 2) {
-		date = parseDate('today');
+		date = parseDateAsUnix('today');
 	} else {
-		date = parseDate(commandTokens[1]);
+		date = parseDateAsUnix(commandTokens[1]);
 	}
 	if (date === undefined) {
 		await ctx.reply(`❌ Unrecognized date: ${commandTokens[1]}`);

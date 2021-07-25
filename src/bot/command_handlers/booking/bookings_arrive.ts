@@ -4,7 +4,7 @@ import BriefBooking from '../../message_components/booking/BriefBooking';
 import { parseDateAndReplyToInvalid } from './bookings_added';
 import briefBookingActions from '../../message_components/booking/BriefBookingActions';
 import fetchBookingsArriveAt from '../../../api/calls/fetchBookingsArriveAt';
-import { parseDate } from '../../../utils/dates.helper';
+import { parseDate, parseDateAsUnix } from '../../../utils/dates.helper';
 import bot from '../../bot';
 
 async function parseCommandFindBookingsArrivedOnAndReply(ctx: Context, next) {
@@ -23,7 +23,7 @@ async function parseCommandFindBookingsArrivedOnAndReply(ctx: Context, next) {
 }
 
 export async function parseCommandFindBookingsArrivedOnAndSend(chatId: string, textCommand: string, replyMessageId?: number) {
-	const date = await parseDate(textCommand);
+	const date = await parseDateAsUnix(textCommand);
 	if (!date) {
 		return;
 	}

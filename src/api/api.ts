@@ -7,6 +7,7 @@ function apiUrl(path: string): string {
 }
 
 async function callApi(path: string, config: AxiosRequestConfig): Promise<unknown> {
+	console.log('making request', { path, config });
 	return (await axios(apiUrl(path), {
 		...config,
 		headers: {
