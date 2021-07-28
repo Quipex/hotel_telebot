@@ -16,8 +16,8 @@ async function parseCommandCreateBookingAndReply(ctx: Context) {
 		fromDate = parseDate(commandTokens[1]);
 		toDate = parseDate(commandTokens[2]);
 		roomNumber = commandTokens[3];
-		guestName = commandTokens[4];
-		if (!fromDate || !toDate) {
+		guestName = commandTokens.slice(4).join(' ');
+		if (!fromDate || !toDate || !commandTokens[4]) {
 			return replyWithUsageManual(ctx);
 		}
 	} catch (e) {
