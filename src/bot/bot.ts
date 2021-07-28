@@ -37,10 +37,6 @@ bot.command('sync', synchronizeBookingsAndClientsAndReply);
 bot.command('create', parseCommandCreateBookingAndReply);
 bot.command(['not_payed', 'prepay', 'prepayment', 'pp', 'npp'], parseCommandFindBookingsNotPrePayedAndReply);
 bot.command(['pp_expired', 'expired'], findBookingsRemindedAndExpiredPrepaymentAndReply);
-bot.command('report_arrived_yesterday', );
-bot.command('report_not_reminded_no_prepayment', );
-bot.command('report_reminded_no_prepayment', );
-bot.command('report_bookings_updates', );
 
 bot.launch()
 	.then(() => {
