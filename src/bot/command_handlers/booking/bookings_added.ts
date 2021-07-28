@@ -3,7 +3,7 @@ import { Context } from 'telegraf';
 import BriefBooking from '../../message_components/booking/BriefBooking';
 import { parseDateAsUnix } from '../../../utils/dates.helper';
 import briefBookingActions from '../../message_components/booking/BriefBookingActions';
-import fetchBookingsArriveAt from '../../../api/calls/fetchBookingsArriveAt';
+import fetchBookingsAddedAfter from '../../../api/calls/fetchBookingsAddedAfter';
 
 export async function parseDateAndReplyToInvalid(ctx: Context, text?: string): Promise<number | undefined> {
 	const messageText = text ?? ctx.message!.text;
@@ -30,13 +30,14 @@ async function parseCommandFindBookingsAddedAfterAndReply(ctx: Context, next, op
 	if (!date) {
 		return next();
 	}
-	const todayArrivals = await fetchBookingsArriveAt(date);
+	const todayArrivals = await fetchBookingsAddedAfter(date);
 	for (const booking of todayArrivals) {
 		await ctx.replyWithHTML(BriefBooking(booking), {
 			reply_to_message_id: (options?.messageReplyId ?? ctx.message?.message_id),
 			reply_markup: { inline_keyboard: briefBookingActions(booking) }
 		});
 	}
+	return next();
 }
 
 export default parseCommandFindBookingsAddedAfterAndReply;
