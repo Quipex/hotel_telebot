@@ -14,13 +14,17 @@ import parseCommandFindBookingsNotPrePayedAndReply from './command_handlers/book
 import findBookingsRemindedAndExpiredPrepaymentAndReply
 	from './command_handlers/booking/bookings_not_prepayed_reminded_expired';
 import parseCommandFindClientByIdAndReply from './command_handlers/client/client_by_id';
+import {
+	parseCommandMoveBookingAndReply,
+	parseCommandMoveBookingInBatchAndReply
+} from './command_handlers/booking/booking_move';
 
 const bot = new Telegraf(env.botToken);
 
 bot.catch(async (err, ctx: Context) => {
 	await ctx.replyWithHTML('☠ Got error ☠\n\n' +
 		`<code>${err.message}</code>`);
-	console.error(`Got an error for update of type '${ctx.updateType}':`, err.message);
+	console.error(`Got an error for update of type '${ctx.updateType}':`, err);
 });
 bot.use(security);
 bot.on('text', validateMessage);
@@ -37,6 +41,8 @@ bot.command('sync', synchronizeBookingsAndClientsAndReply);
 bot.command('create', parseCommandCreateBookingAndReply);
 bot.command(['not_payed', 'prepay', 'prepayment', 'pp', 'npp'], parseCommandFindBookingsNotPrePayedAndReply);
 bot.command(['pp_expired', 'expired'], findBookingsRemindedAndExpiredPrepaymentAndReply);
+bot.command('mv', parseCommandMoveBookingAndReply);
+bot.command('mv_batch', parseCommandMoveBookingInBatchAndReply);
 
 bot.launch()
 	.then(() => {

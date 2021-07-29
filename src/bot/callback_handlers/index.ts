@@ -4,6 +4,7 @@ import {
 	bookingDetails,
 	bookingLivingAsk,
 	bookingLivingConfirm,
+	bookingMoveList,
 	bookingPrePaidAsk,
 	bookingPrePaidConfirm,
 	bookingRefresh,
@@ -22,6 +23,7 @@ import { refreshBooking } from './handlers/booking/refreshBooking';
 import { refreshClient } from './handlers/client/refreshClient';
 import { findClientBookings } from './handlers/client/findClientBookings';
 import { sendClientDetails } from './handlers/client/sendClientDetails';
+import { replyWithMoveBookingUsage } from './handlers/booking/moveBookingUsage';
 
 async function handleCallbackQueries(ctx: Context) {
 	const { data, message: { message_id } } = ctx.update.callback_query as CallbackQuery;
@@ -89,6 +91,10 @@ async function handleCallbackQuery(ctx: Context, callback: { callbackData: strin
 		}
 		case clientBookings: {
 			await findClientBookings(ctx, firstArgument, callback.message_id);
+			break;
+		}
+		case bookingMoveList: {
+			await replyWithMoveBookingUsage(ctx, firstArgument, callback.message_id);
 			break;
 		}
 	}

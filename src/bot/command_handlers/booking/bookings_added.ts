@@ -5,6 +5,9 @@ import { parseDateAsUnix } from '../../../utils/dates.helper';
 import briefBookingActions from '../../message_components/booking/BriefBookingActions';
 import fetchBookingsAddedAfter from '../../../api/calls/fetchBookingsAddedAfter';
 
+/**
+ * As unix
+ */
 export async function parseDateAndReplyToInvalid(ctx: Context, text?: string): Promise<number | undefined> {
 	const messageText = text ?? ctx.message!.text;
 	const commandTokens = messageText.split(' ');
